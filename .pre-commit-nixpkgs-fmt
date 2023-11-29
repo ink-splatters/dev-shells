@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# opposite to hook at https://github.com/nix-community/nixpkgs-fmt,
+# this one uses the fact that `nix fmt` should work just fine
+
+nix fmt
