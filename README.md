@@ -1,2 +1,7 @@
-# dev-shells
-nix dev shells 
+## dev shell
+
+### Credits
+
+https://devenv.sh
+https://cachix.org
+@domenkozar
