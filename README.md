@@ -9,5 +9,6 @@ nix develop --impure --accept-flake-config
 ```
 
 ### Credits
+- @domenkozar
+- https://devenv.sh
 
-@domenkozar
