@@ -5,8 +5,8 @@
   };
 
   nixConfig = {
-    extra-substituters = [ https://devenv.cachix.org https://nix-community.cachix.org ];
-    extra-trusted-public-keys = [ devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= ];
+    extra-substituters = "https://devenv.cachix.org https://nix-community.cachix.org https://pre-commit-hooks.cachix.org";
+    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc=";
   };
 
   outputs = { self, nixpkgs, devenv, systems, ... } @ inputs:
@@ -32,6 +32,20 @@
               inherit inputs pkgs;
               modules = [
                 {
+
+                  pre-commit.hooks = {
+                    # lint shell scripts
+                    shellcheck.enable = true;
+                    # execute example shell from Markdown files
+                    mdsh.enable = true;
+
+                    nixpkgs-fmt.enable = true;
+                    nil.enable = true;
+                    statix.enable = true;
+                    deadnix.enable = true;
+                    yamllint.enable = true;
+
+                  };
                   # https://devenv.sh/reference/options/
                   packages = [ pkgs.hello ];
 
@@ -44,3 +58,6 @@
           });
     };
 }
+
+
+
