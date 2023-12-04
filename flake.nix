@@ -31,7 +31,7 @@
                   {
                     hardeningDisable = [ "format" "stackprotector" "fortify" "strictoverflow" "relro" "bindnow" ];
                   }
-                  _prev.stdenv;
+                  (prev.impureUseNativeOptimizations _prev.stdenv);
               });
 
             }));
