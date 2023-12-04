@@ -17,10 +17,6 @@
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
-      #      formatter = forEachSystem (system:
-      #        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
-      #      );
-
       packages = forEachSystem (system: {
         devenv-up = self.devShells.${system}.default.config.procfileScript;
       });
@@ -36,7 +32,6 @@
                     hardeningDisable = [ "format" "stackprotector" "fortify" "strictoverflow" "relro" "bindnow" ];
                   }
                   _prev.stdenv;
-
               });
 
             }));
