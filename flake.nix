@@ -11,14 +11,15 @@
     sandbox = false;
   };
 
-  outputs = { self, nixpkgs, devenv, systems, ... } @ inputs:
+  outputs = { self, devenv, nixpkgs, systems, ... } @ inputs:
+
     let
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
-#      formatter = forEachSystem (system:
-#        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
-#      );
+      #      formatter = forEachSystem (system:
+      #        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
+      #      );
 
       packages = forEachSystem (system: {
         devenv-up = self.devShells.${system}.default.config.procfileScript;
@@ -27,15 +28,27 @@
       devShells = forEachSystem
         (system:
           let
-            pkgs = nixpkgs.legacyPackages.${system};
+            pkgs = nixpkgs.legacyPackages.${system}.extend (_: (prev: {
+
+              llvmPackages = prev.llvmPackages_latest.override (_prev: {
+                stdenv = prev.addAttrsToDerivation
+                  {
+                    hardeningDisable = [ "format" "stackprotector" "fortify" "strictoverflow" "relro" "bindnow" ];
+                  }
+                  _prev.stdenv;
+
+              });
+
+            }));
           in
           {
+
             default = devenv.lib.mkShell {
               inherit inputs pkgs;
-              NIX_ENABLE_HARDENING="pic";
+
+
               modules = [
                 {
-
                   pre-commit.hooks = {
                     # lint shell scripts
                     shellcheck.enable = true;
@@ -49,11 +62,11 @@
                     yamllint.enable = true;
 
                   };
-                  # https://devenv.sh/reference/options/
-                  packages = with pkgs; [
+                  languages.cplusplus.enable = true;
 
-			llvmPackages_latest.stdenv
-		 ];
+                  # packages = with pkgs; [
+                  #   llvmPackages_latest.stdenv
+                  # ];
 
                 }
               ];
