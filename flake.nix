@@ -11,20 +11,11 @@
     sandbox = false;
   };
 
-  outputs = { self, devenv, nixpkgs, systems, ... } @ inputs:
+  outputs = { self, flake-utils, devenv, nixpkgs,  ... } @ inputs:
+    flake-utils.lib.eachDefaultSystem (system:
 
-    let
-      forEachSystem = nixpkgs.lib.genAttrs (import systems);
-    in
-    {
-      packages = forEachSystem (system: {
-        devenv-up = self.devShells.${system}.default.config.procfileScript;
-      });
-
-      devShells = forEachSystem
-        (system:
-          let
-            pkgs = nixpkgs.legacyPackages.${system}.extend (_: (prev: {
+      let
+        pkgs = nixpkgs.legacyPackages.${system}.extend (_: (prev: {
 
               llvmPackages = prev.llvmPackages_latest.override (_prev: {
                 stdenv = prev.addAttrsToDerivation
@@ -33,18 +24,8 @@
                   }
                   (prev.impureUseNativeOptimizations _prev.stdenv);
               });
-
-            }));
-          in
-          {
-
-            default = devenv.lib.mkShell {
-              inherit inputs pkgs;
-
-
-              modules = [
-                {
-                  pre-commit.hooks = {
+          }));
+        pre-commit.hooks = {
                     # lint shell scripts
                     shellcheck.enable = true;
                     # execute example shell from Markdown files
@@ -57,7 +38,17 @@
                     yamllint.enable = true;
 
                   };
-                  languages.cplusplus.enable = true;
+    in
+    {
+      packages.devenv-up = self.devShells.${system}.default.config.procfileScript;
+
+      devShells.default = devenv.lib.mkShell {
+              inherit inputs pkgs;
+
+              modules = [
+                {
+                  inherit pre-commit;
+                  # languages.cplusplus.enable = true;
 
                   # packages = with pkgs; [
                   #   llvmPackages_latest.stdenv
@@ -67,7 +58,6 @@
               ];
             };
           });
-    };
 }
 
 
