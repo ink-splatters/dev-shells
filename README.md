@@ -22,53 +22,35 @@ EOF
 ### Usage
 
 ```shell
-nix develop github:ink-splatters/dev-shells/<name> --impure
+nix develop github:ink-splatters/dev-shells#<name> --impure
 ```
 
-e.g.:
+#### Examples
+
+- enter `swift` shell (contains `swift` and swift package manager) without cloning the repo:
 
 ```shell
-nix develop github:ink-splatters/dev-shells/cpp/O3 --impure
+nix develop github:ink-splatters/dev-shells#swift --impure
 ```
 
-### Shells
+- enter `cpp` shell, locally:
 
-#### c++
+```shell
+git clone https://github:ink-splatters/dev-shells.git
+cd dev-shells
+nix develop .#cpp
+```
 
-all shells share the common defaults:
+### Shell List
 
-nixpkgs version | stdenv | CFLAGS | CXXFLAGS 
-:---: | :---: | :---: | :---: 
-[e5d1c8](https://github.com/NixOS/nixpkgs/commit/e5d1c87f5813afde2dda384ac807c57a105721cc) | llvmPackages_latest | `-mcpu native` | `-mcpu native -stdlib=libc++`
+- `cpp`
+- `cpp-O3`
+- `swift`
+- `swift-O3`
 
-##### Shells
+with hardening disabled:
 
-name | CFLAGS | CXXFLAGS | hardening 
-:--- | :---: | :---: | :---
-`cpp/default` |  |  | default
-`cpp/O3` | `-O3` | `-O3` | default
-`cpp/hardening_disabled` |  |  | fully disabled
-`cpp/hardening_disabled_O3` | `-O3` | `-O3` | fully disabled
-`cpp/hardening_disabled_specific` |  |  | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
-`cpp/hardening_disabled_specific_O3` | `-O3` | `-O3` | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
-  
-
-#### swift
-
-all shells share the common defaults:
-
-nixpkgs version | stdenv | CFLAGS | CXXFLAGS 
-:---: | :---: | :---: | :---: 
-[e5d1c8](https://github.com/NixOS/nixpkgs/commit/e5d1c87f5813afde2dda384ac807c57a105721cc) | swiftPackages | `-mcpu native` | `-mcpu native -stdlib=libc++`
-
-##### Shells
-
-name | CFLAGS | CXXFLAGS | hardening 
-:--- | :---: | :---: | :---
-`swift/default` |  |  | default
-`swift/O3` | `-O3` | `-O3` | default
-`swift/hardening_disabled` |  |  | fully disabled
-`swift/hardening_disabled_O3` | `-O3` | `-O3` | fully disabled
-`swift/hardening_disabled_specific` |  |  | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
-`swift/hardening_disabled_specific_O3` | `-O3` | `-O3` | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
-  
+- `cpp-unhardened`
+- `cpp-O3-unhardened`
+- `swift-unhardened`
+- `swift-O3-unhardened`
