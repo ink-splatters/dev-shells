@@ -52,3 +52,23 @@ name | CFLAGS | CXXFLAGS | hardening
 `cpp/hardening_disabled_specific` |  |  | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
 `cpp/hardening_disabled_specific_O3` | `-O3` | `-O3` | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
   
+
+#### swift
+
+all shells share the common defaults:
+
+nixpkgs version | stdenv | CFLAGS | CXXFLAGS 
+:---: | :---: | :---: | :---: 
+[e5d1c8](https://github.com/NixOS/nixpkgs/commit/e5d1c87f5813afde2dda384ac807c57a105721cc) | swiftPackages | `-mcpu native` | `-mcpu native -stdlib=libc++`
+
+##### Shells
+
+name | CFLAGS | CXXFLAGS | hardening 
+:--- | :---: | :---: | :---
+`swift/default` |  |  | default
+`swift/O3` | `-O3` | `-O3` | default
+`swift/hardening_disabled` |  |  | fully disabled
+`swift/hardening_disabled_O3` | `-O3` | `-O3` | fully disabled
+`swift/hardening_disabled_specific` |  |  | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
+`swift/hardening_disabled_specific_O3` | `-O3` | `-O3` | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
+  
