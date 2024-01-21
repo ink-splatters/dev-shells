@@ -41,4 +41,18 @@ cd dev-shells
 nix develop .#cpp
 ```
 
+### Shell List
+
+- `cpp`
+- `cpp-O3`
+- `swift`
+- `swift-O3`
+
+with hardening disabled:
+
+- `cpp-unhardened`
+- `cpp-O3-unhardened`
+- `swift-unhardened`
+- `swift-O3-unhardened`
+
 
