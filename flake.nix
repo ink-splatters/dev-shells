@@ -54,6 +54,23 @@
           installPhase = ''
             mkdir "$out"
           '';
+
+          # TODO: integrate and make working  (cannot pull remote deps)
+          # checks.default = stdenv.mkDerivation {
+          #   inherit (self.devShells.${system}.default) nativeBuildInputs hardeningDisable CXXFLAGS;
+
+          #   name = "check";
+          #   src = ./checks/swift;
+          #   dontBuild = true;
+          #   doCheck = true;
+
+          #   checkPhase = ''
+          #     swift build -c release
+          #   '';
+          #   installPhase = ''
+          #     mkdir "$out"
+          #   '';
+          # };
         };
       });
 }
