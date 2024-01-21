@@ -25,8 +25,20 @@ EOF
 nix develop github:ink-splatters/dev-shells#<name> --impure
 ```
 
-e.g.:
+#### Examples
+
+- enter `swift` shell (contains `swift` and swift package manager) without cloning the repo:
 
 ```shell
 nix develop github:ink-splatters/dev-shells#swift --impure
 ```
+
+- enter `cpp` shell, locally:
+
+```shell
+git clone https://github:ink-splatters/dev-shells.git
+cd dev-shells
+nix develop .#cpp
+```
+
+
