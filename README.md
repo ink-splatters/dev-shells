@@ -1,10 +1,10 @@
-## dev shells
+## Dev Shells
 
 barebone dev shells based on `nix flakes`
 
 production ready and much more feature-rich alternative: https://devenv.sh
 
-### requrements
+### Requirements
 
 `nix` with `flake` support
 
@@ -19,7 +19,7 @@ experimental-features = flakes nix-command
 EOF
 ```
 
-### usage
+### Usage
 
 ```shell
 nix develop github:ink-splatters/dev/shells/<name> --impure
@@ -28,21 +28,27 @@ nix develop github:ink-splatters/dev/shells/<name> --impure
 e.g.:
 
 ```shell
-nix develop github:ink-splatters/dev/shells/cpp/O3--impure
+nix develop github:ink-splatters/dev/shells/cpp/O3 --impure
 ```
 
-### shells
+### Shells
 
-#### cpp
+#### c++
 
+all shells share the common defaults:
 
-name | nixpkgs | stdenv | CFLAGS | CXXFLAGS | LDFLAGS | disabled hardening | packages | buildInputs | nativeBuildInputs
-:---: :---: :---: :---: :---: :---: :---: :---: :---:
-cpp/cpp | unstable [`e5d1c87`] | llvmPackages_latest |  `-mcpu native` | `-mcpu native -stdlib=libc++` | - | -| - | - | -
-cpp/O3 | unstable [`e5d1c87`] | llvmPackages_latest |  `-mcpu native -O3` | `-mcpu native -stdlib=libc++ -O3` | - | -| - | - | -
-cpp/hardening_disable | unstable [`e5d1c87`] | llvmPackages_latest |  `-mcpu native` | `-mcpu native -stdlib=libc++` | - | fully disabled | - | - | -
-cpp/hardening_disable_O3 | unstable [`e5d1c87`] | llvmPackages_latest |  `-mcpu native -O3` | `-mcpu native -stdlib=libc++ -O3` | - | fully disabled | - | - | -
-cpp/hardening_disable_explicit_O3 | unstable [`e5d1c87`] | llvmPackages_latest |  `-mcpu native` | `-mcpu native -stdlib=libc++` | - | format, stackprotector, fortify, strictoverflow, relro, bindnow| fully disabled | - | - | -
-cpp/hardening_disable_explicit_O3 | unstable [`e5d1c87`] | llvmPackages_latest |  `-mcpu native -O3` | `-mcpu native -stdlib=libc++ -O3` | - | format, stackprotector, fortify, strictoverflow, relro, bindnow | - | - | -
+nixpkgs version | stdenv | CFLAGS | CXXFLAGS 
+:---: | :---: | :---: | :---: 
+[e5d1c8](https://github.com/NixOS/nixpkgs/commit/e5d1c87f5813afde2dda384ac807c57a105721cc) | llvmPackages_latest | `-mcpu native` | `-mcpu native -stdlib=libc++`
 
+##### Shells
 
+name | CFLAGS | CXXFLAGS | hardening 
+:--- | :---: | :---: | :---
+`cpp/default` |  |  | default
+`cpp/O3` | `-O3` | `-O3` | default
+`cpp/hardening_disabled` |  |  | fully disabled
+`cpp/hardening_disabled_O3` | `-O3` | `-O3` | fully disabled
+`cpp/hardening_disabled_specific` |  |  | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
+`cpp/hardening_disabled_specific_O3` | `-O3` | `-O3` | no `format`, `stackprotector`, `fortify`, `strictoverflow`, `relro`, `bindnow` 
+  
