@@ -22,13 +22,13 @@ EOF
 ### Usage
 
 ```shell
-nix develop github:ink-splatters/dev/shells/<name> --impure
+nix develop github:ink-splatters/dev-shells/<name> --impure
 ```
 
 e.g.:
 
 ```shell
-nix develop github:ink-splatters/dev/shells/cpp/O3 --impure
+nix develop github:ink-splatters/dev-shells/cpp/O3 --impure
 ```
 
 ### Shells
