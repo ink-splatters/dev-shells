@@ -19,10 +19,7 @@ git-hooks.lib.${system}.run {
     };
 
     nil.enable = true;
-    nixfmt = {
-      package = pkgs.nixfmt-rfc-style;
-      enable = true;
-    };
+    nixfmt-rfc-style.enable = true;
     statix.enable = true;
   };
 
