@@ -39,9 +39,7 @@
     "git-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
-        "gitignore": [
-          "gitignore"
-        ],
+        "gitignore": "gitignore",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -66,6 +64,7 @@
     "gitignore": {
       "inputs": {
         "nixpkgs": [
+          "git-hooks",
           "nixpkgs"
         ]
       },
@@ -85,16 +84,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1720781449,
-        "narHash": "sha256-po3TZO9kcZwzvkyMJKb0WCzzDtiHWD34XeRaX1lWXp0=",
+        "lastModified": 1726871744,
+        "narHash": "sha256-V5LpfdHyQkUF7RfOaDPrZDP+oqz88lTJrMT1+stXNwo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8b5a3d5a1d951344d683b442c0739010b80039db",
+        "rev": "a1d92660c6b3b7c26fb883500a80ea9d33321be2",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixpkgs-unstable",
         "type": "indirect"
       }
     },
@@ -102,7 +100,6 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "git-hooks": "git-hooks",
-        "gitignore": "gitignore",
         "nixpkgs": "nixpkgs",
         "systems": "systems"
       }

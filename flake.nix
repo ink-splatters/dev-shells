@@ -2,13 +2,8 @@
   description = "basic cpp development shell";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
 
-    gitignore = {
-      url = "github:hercules-ci/gitignore.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils = {
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
@@ -16,7 +11,6 @@
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
-        gitignore.follows = "gitignore";
         nixpkgs.follows = "nixpkgs";
         nixpkgs-stable.follows = "nixpkgs";
       };
