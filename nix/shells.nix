@@ -23,6 +23,7 @@ in
 
     nativeBuildInputs = with pkgs; [
       ccache
+      clang_18
       cmake
       gnumake
       lld_18
