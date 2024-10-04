@@ -1,5 +1,5 @@
 {
-  pkgs,
+  lib,
   llvmPackages_18,
   maxPerfUnhardened ? false,
   maxPerf ? maxPerfUnhardened,
@@ -9,7 +9,7 @@
   ...
 }:
 let
-  inherit (pkgs) clang_18 lib;
+  inherit (llvmPackages_18) stdenv clang;
 
   oneOf =
     cond: lst1: lst2:
@@ -17,7 +17,7 @@ let
   opt = cond: lst: oneOf cond lst [ ];
 
   flags =
-    opt llvmPackages_18.stdenv.isDarwin [ "-mcpu=apple-m1" ]
+    opt stdenv.isDarwin [ "-mcpu=apple-m1" ]
     ++ oneOf maxPerf [ "-O3" ] [ "-O2" ]
     ++ opt maxPerf [ "-ffast-math" ]
     ++ opt maxPerf [ "-mtune=native" ]
@@ -25,26 +25,32 @@ let
     ++ opt isThinLTO [ "-flto=thin" ]
     ++ opt (isLTO && !isThinLTO) [ "-flto" ];
 
-  hardeningDisable = opt maxPerfUnhardened [ "all" ];
-  LDFLAGS = lib.optionalString isLLD ? "-fuse-ld=lld";
+  stdlib = "-stdlib libc++";
 
   inherit (builtins) concatStringsSep readFile;
   getNixCompilerFlags =
-    lst: map (flags: (lib.removeSuffix "\n" (readFile "${clang_18}/nix-support/${flags}"))) lst;
+    lst: map (flags: (lib.removeSuffix "\n" (readFile "${clang}/nix-support/${flags}"))) lst;
 
   mergeFlags = lst: concatStringsSep " " lst;
 
-in
-{
+  hardeningDisable = opt maxPerfUnhardened [ "all" ];
+
   CFLAGS = mergeFlags (
     flags
     ++ getNixCompilerFlags [
       "cc-cflags"
       "libc-cflags"
-      "libcxx-cxxflags"
     ]
   );
   CXXFLAGS = mergeFlags (flags ++ getNixCompilerFlags [ "libcxx-cxxflags" ]);
-  inherit LDFLAGS;
-  inherit hardeningDisable;
+  LDFLAGS = "${stdlib} " + lib.optionalString isLLD "-fuse-ld=lld";
+
+in
+{
+  inherit
+    CFLAGS
+    CXXFLAGS
+    LDFLAGS
+    hardeningDisable
+    ;
 }
