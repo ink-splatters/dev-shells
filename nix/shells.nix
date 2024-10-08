@@ -1,6 +1,6 @@
 {
   callPackage,
-  llvmPackages_18,
+  llvmPackages_19,
   mkShell,
   stdenvNoCC,
   pkgs,
@@ -9,9 +9,16 @@
 }:
 let
   compilerFlags = callPackage ./compiler-flags.nix { maxPerf = true; };
+  inherit (llvmPackages_19)
+    stdenv
+    clang
+    libcxx
+    lld
+    ;
+
 in
 {
-  default = mkShell.override { inherit (llvmPackages_18) stdenv; } {
+  default = mkShell.override { inherit stdenv; } {
     name = "cpp-shell";
 
     inherit (compilerFlags)

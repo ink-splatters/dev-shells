@@ -1,5 +1,5 @@
 {
-  description = "basic cpp development shell";
+  description = "basic dev shells";
 
   inputs = {
     systems.url = "github:nix-systems/default";

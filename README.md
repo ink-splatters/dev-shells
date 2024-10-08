@@ -1,36 +1,48 @@
 ## dev-shells / cpp
 
-barebone cpp development shell based on `nix flakes`
+basic nix flakes-based development shells. 
+
+might or might not be ditched / partially merged into [devenv]()
 
 ### Requirements
 
-`nix` with `flake` support
+`nix` with [flakes](https://nixos.wiki/wiki/Flakes) support
 
-to enable it, given nix is installed:
+### Usage
 
-```shell
-mkdir -p $HOME/.config/nix
-cat <<'EOF' >> $HOME/.config/nix.conf
-
-experimental-features = flakes nix-command
-
-EOF
-```
-
-alternatively, add the following alias to your shell:
+all shells can be accessed using `nix develop`:
 
 ```shell
-alias nix='nix --arg experimental-features='nix-command flakes'
+nix develop github:ink-splatters/dev-shell .#<shell name>
 ```
 
-### Shells
+#### Default
 
-default shell can be entered using:
+cpp shell is currently the default one.
+
+#### Note fo Apple Silicon users
+
+There is binary cache for Apple Silicon platform and it's highly recommmended you would enable it either using cachix:
+
+```sh
+cachix use aarch64-darwin
+```
+
+or via specifying `accept-flake-config` in `nix develop`:
 
 ```shell
-nix develop github:ink-splatters/cpp-shell
-
+nix develop --accept-flake-config github:ink-splatters/dev-shell .#<shell name>
 ```
+
+### Supported shells
+
+#### c/c++/obj. c/obj. c++
+
+two shells:
+
+- gcc (`gccStdenv.mkShell` based)
+- llvm 19
+   
 
 there are 3 more shell types:
 
@@ -42,6 +54,29 @@ all the shells feature:
 
 - `-mcpu=apple-m1` if applicable
 - LDFLAGS=`-fused-ld=lld`
+
+
+#### gcc
+
+basic gcc shell 
+
+### llvm
+
+opinionated shell based on llvmPackages_19.libcxxStdenv
+
+all c/c++ shells include
+
+- gnumake
+- ninja
+- cmake
+- pkg-config
+
+##### toolchains
+
+###### gcc
+
+
+
 
 ### Examples
 
