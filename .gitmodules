@@ -1,0 +1,3 @@
+[submodule "swift-shell"]
+	path = swift-shell
+	url = git@github.com:ink-splatters/swift-shell.git
