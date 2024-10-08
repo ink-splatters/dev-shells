@@ -27,7 +27,6 @@
       nixpkgs,
       flake-utils,
       git-hooks,
-      self,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -36,14 +35,16 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         inherit (pkgs) callPackage;
+        pre-commit-check = callPackage ./nix/pre-commit-check.nix { inherit git-hooks system; };
       in
       {
-
-        checks.pre-commit-check = callPackage ./nix/pre-commit-check.nix { inherit git-hooks system; };
+        checks = {
+          inherit pre-commit-check;
+        };
 
         formatter = pkgs.nixfmt-rfc-style;
 
-        devShells = callPackage ./nix/shells.nix { inherit (self.checks.${system}) pre-commit-check; };
+        devShells = callPackage ./nix/shells.nix { inherit pre-commit-check; };
       }
     );
 }
