@@ -1,6 +1,6 @@
 {
   lib,
-  llvmPackages_19,
+  llvmPackages,
   maxPerfUnhardened ? false,
   maxPerf ? maxPerfUnhardened,
   isThinLTO ? false,
@@ -9,7 +9,7 @@
   ...
 }:
 let
-  inherit (llvmPackages_19) stdenv clang;
+  inherit (llvmPackages) stdenv clang;
 
   oneOf =
     cond: lst1: lst2:

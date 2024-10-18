@@ -35,7 +35,16 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         inherit (pkgs) callPackage;
-        pre-commit-check = callPackage ./nix/pre-commit-check.nix { inherit git-hooks system; };
+
+        callPackageWithLib = let
+          lib = {
+
+            # TODO: make maxPerf configurable
+            compiler-flags =  callPackage ./lib/compiler-flags.nix { maxPerf = true; };
+            pre-commit-check = callPackage ./lib/pre-commit-check.nix { inherit git-hooks system; };        
+
+          };
+        
       in
       {
         checks = {
@@ -44,7 +53,11 @@
 
         formatter = pkgs.nixfmt-rfc-style;
 
-        devShells = callPackage ./nix/shells.nix { inherit pre-commit-check; };
+        devShells = {
+          install-hooks = callPackage ./shells/install-hooks { inherit lib; stdenv = pkgs.stdenvNoCC; };
+          cpp = callPackage ./shells/cpp  { llvmPackages = pkgs.llvmPackages_19; };
+
+        };
       }
     );
 }
